@@ -1,7 +1,7 @@
 {
-  "name": "colormessage",
+  "name": "clcolorful",
   "version": "1.0.0",
-  "description": "This is used to for colorfull node messages.",
+  "description": "Create colorful messages for the command line",
   "main": "index.js",
   "scripts": {
     "build": "tsc"
@@ -16,10 +16,10 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Elias-Graf/colorMessage.git"
+    "url": "git+https://github.com/Elias-Graf/clcolorful.git"
   },
   "bugs": {
-    "url": "https://github.com/Elias-Graf/colorMessage/issues"
+    "url": "https://github.com/Elias-Graf/clcolorful/issues"
   },
-  "homepage": "https://github.com/Elias-Graf/colorMessage#readme"
+  "homepage": "https://github.com/Elias-Graf/clcolorful#readme"
 }
