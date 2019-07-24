@@ -1,15 +1,24 @@
 {
-  "name": "colorMessage",
+  "name": "colormessage",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is used to for colorfull node messages.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Elias",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^12.6.8"
-  }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Elias-Graf/colorMessage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Elias-Graf/colorMessage/issues"
+  },
+  "homepage": "https://github.com/Elias-Graf/colorMessage#readme"
 }
