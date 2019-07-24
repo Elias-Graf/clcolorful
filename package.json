@@ -10,7 +10,8 @@
   "author": "Elias",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^12.6.8"
+    "@types/node": "^12.6.8",
+    "typescript": "^3.5.3"
   },
   "dependencies": {},
   "repository": {
