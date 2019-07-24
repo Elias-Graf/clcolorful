@@ -2,7 +2,7 @@
   "name": "clcolorful",
   "version": "1.0.0",
   "description": "Create colorful messages for the command line",
-  "main": "index.js",
+  "main": "./build/index.js",
   "scripts": {
     "build": "tsc"
   },
