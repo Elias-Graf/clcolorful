@@ -1,2 +1,4 @@
-# ColorMessage
-This is used to for colorfull node messages.
+# ClColorful
+
+This library is used for printing colorful messages to the terminal with nodejs.
+
