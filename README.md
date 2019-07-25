@@ -11,7 +11,7 @@ to get a message with red foreground. The same for background:
 ```javascript
 msg('Background is red!').bg('red').log();
 ```
-Simply chain options to get both:
+Multiple chained options:
 ```javascript
 msg('White bg, black fg').bg('white').fg('black').log();
 ```
@@ -25,7 +25,7 @@ msg('White bg, black fg').bg('white').fg('black').log();
 | `<msg>.u()` | Underlines the message |
 
 ## Tail
-Sometimes you want to style different part of messages. So there is the `tail(message: string)` function which creates a new message which is tailed to the end of the previous. 
+Sometimes you want to style different part of messages. So there is the `tail(message: string)` function which creates a new message that is tailed to the end of the previous. 
 **This will return a new message object!**
 
 In practice this looks something like:
