@@ -40,12 +40,17 @@ export declare class Message {
      *
      * This is rarely supported!!
      */
-    i(): Message;
     /**
      * Makes the message underlined
      */
     u(): Message;
-    st(): Message;
+    /**
+     * Makes the message italic
+     *
+     * **======== WARNING ========**
+     *
+     * This is rarely supported!!
+     */
     /**
      * Sends the message to console.log
      */

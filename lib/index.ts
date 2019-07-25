@@ -118,10 +118,10 @@ export class Message {
    * 
    * This is rarely supported!!
    */
-  public i(): Message {
-    this._italic = true;
-    return this;
-  }
+  // public i(): Message {
+  //   this._italic = true;
+  //   return this;
+  // }
   /**
    * Makes the message underlined
    */
@@ -129,11 +129,17 @@ export class Message {
     this._underline = true;
     return this;
   }
-
-  public st(): Message {
-    this._strikeThrough = true;
-    return this;
-  }
+  /**
+   * Makes the message italic
+   * 
+   * **======== WARNING ========** 
+   * 
+   * This is rarely supported!!
+   */
+  // public st(): Message {
+  //   this._strikeThrough = true;
+  //   return this;
+  // }
   /**
    * Sends the message to console.log
    */

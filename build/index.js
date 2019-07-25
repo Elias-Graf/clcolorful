@@ -132,10 +132,10 @@ var Message = /** @class */ (function () {
      *
      * This is rarely supported!!
      */
-    Message.prototype.i = function () {
-        this._italic = true;
-        return this;
-    };
+    // public i(): Message {
+    //   this._italic = true;
+    //   return this;
+    // }
     /**
      * Makes the message underlined
      */
@@ -143,10 +143,17 @@ var Message = /** @class */ (function () {
         this._underline = true;
         return this;
     };
-    Message.prototype.st = function () {
-        this._strikeThrough = true;
-        return this;
-    };
+    /**
+     * Makes the message italic
+     *
+     * **======== WARNING ========**
+     *
+     * This is rarely supported!!
+     */
+    // public st(): Message {
+    //   this._strikeThrough = true;
+    //   return this;
+    // }
     /**
      * Sends the message to console.log
      */
