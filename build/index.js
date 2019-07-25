@@ -5,12 +5,21 @@ function msg(msg) {
 }
 exports.msg = msg;
 var Message = /** @class */ (function () {
-    function Message(msg) {
-        this._fgColor = null;
+    /**
+     *
+     * @param msg String in this message
+     * @param head Message that may be prepended to this message
+     */
+    function Message(msg, head) {
+        if (head === void 0) { head = null; }
         this._bgColor = null;
-        this._underline = false;
         this._bold = false;
+        this._fgColor = null;
+        this._strikeThrough = false;
+        this._space = false;
         this._italic = false;
+        this._underline = false;
+        this._head = head;
         this._message = msg;
     }
     /**
@@ -18,6 +27,8 @@ var Message = /** @class */ (function () {
      */
     Message.prototype.generate = function () {
         var str = this._message + '\x1b[0m';
+        if (this._space)
+            str = str + " ";
         if (this._bgColor !== null)
             str = "" + this._bgColor + str;
         if (this._fgColor !== null)
@@ -28,6 +39,11 @@ var Message = /** @class */ (function () {
             str = "\u001B[4m" + str;
         if (this._italic)
             str = "\u001B[3m" + str;
+        if (this._strikeThrough)
+            str = "\u001B[9m" + str;
+        // Check if there is a head to this msg. If yes append it
+        if (this._head !== null)
+            str = this._head.generate() + str;
         return str;
     };
     /**
@@ -127,6 +143,10 @@ var Message = /** @class */ (function () {
         this._underline = true;
         return this;
     };
+    Message.prototype.st = function () {
+        this._strikeThrough = true;
+        return this;
+    };
     /**
      * Sends the message to console.log
      */
@@ -140,6 +160,20 @@ var Message = /** @class */ (function () {
     Message.prototype.write = function () {
         process.stdout.write(this.generate());
         return this;
+    };
+    /**
+     * Appends a space to the message
+     */
+    Message.prototype.space = function () {
+        this._space = true;
+        return this;
+    };
+    /**
+     * Tails a message and returns the new message for styling.
+     * @param msg The string for the message
+     */
+    Message.prototype.tail = function (msg) {
+        return new Message(msg, this);
     };
     return Message;
 }());

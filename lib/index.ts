@@ -5,14 +5,23 @@ export function msg(msg: string) {
 
 
 export class Message {
-  private _fgColor    : string  = null;
   private _bgColor    : string  = null;
-  private _underline  : boolean = false;
   private _bold       : boolean = false;
+  private _fgColor    : string  = null;
+  private _strikeThrough: boolean = false;
+  private _space      : boolean = false;
   private _italic     : boolean = false;
+  private _underline  : boolean = false;
+  private _head       : Message;
   private _message    : string;
 
-  constructor(msg: string) {
+  /**
+   * 
+   * @param msg String in this message
+   * @param head Message that may be prepended to this message
+   */
+  constructor(msg: string, head: Message = null) {
+    this._head = head;
     this._message = msg;
   }
   /**
@@ -21,12 +30,18 @@ export class Message {
   public generate(): string {
     let str = this._message + '\x1b[0m';
     
+    if(this._space) str = `${str} `;
+
     if(this._bgColor !== null) str = `${this._bgColor}${str}`;
     if(this._fgColor !== null) str = `${this._fgColor}${str}`;
 
-    if(this._bold) str = `\x1b[1m${str}`;
+    if(this._bold)      str = `\x1b[1m${str}`;
     if(this._underline) str = `\x1b[4m${str}`;
-    if(this._italic) str = `\x1b[3m${str}`;
+    if(this._italic)    str = `\x1b[3m${str}`;
+    if(this._strikeThrough) str = `\x1b[9m${str}`;
+  
+    // Check if there is a head to this msg. If yes append it
+    if(this._head !== null)  str = this._head.generate() + str;
 
     return str;
   }
@@ -114,6 +129,11 @@ export class Message {
     this._underline = true;
     return this;
   }
+
+  public st(): Message {
+    this._strikeThrough = true;
+    return this;
+  }
   /**
    * Sends the message to console.log
    */
@@ -127,5 +147,19 @@ export class Message {
   public write(): Message {
     process.stdout.write(this.generate());
     return this;
+  }
+  /**
+   * Appends a space to the message
+   */
+  public space(): Message {
+    this._space = true;
+    return this;
+  }
+  /**
+   * Tails a message and returns the new message for styling.
+   * @param msg The string for the message
+   */
+  public tail(msg: string): Message {
+    return new Message(msg, this);
   }
 }
