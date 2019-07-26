@@ -1,4 +1,8 @@
 export declare function msg(msg: string): Message;
+export interface IFrameOptions {
+    padding?: number;
+    color?: string;
+}
 export declare class Message {
     private _bgColor;
     private _bold;
@@ -15,6 +19,7 @@ export declare class Message {
      * @param head Message that may be prepended to this message
      */
     constructor(msg: string, head?: Message);
+    raw(): string;
     /**
      * Generates the message with the given parameters
      */

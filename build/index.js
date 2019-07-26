@@ -19,9 +19,25 @@ var Message = /** @class */ (function () {
         this._space = false;
         this._italic = false;
         this._underline = false;
+        this._head = null;
         this._head = head;
         this._message = msg;
     }
+    // public frame(options?: IFrameOptions): void {
+    //   // const color: string = options !== undefined && 'color' in options ? options.color : 'white';
+    //   // const padding: number = options !== undefined && 'padding' in options ? options.padding : 1;
+    // }
+    Message.prototype.raw = function () {
+        var str = this._message;
+        if (this._space)
+            str = str + ' ';
+        console.log("|" + str + "|");
+        str = str + 'hey';
+        console.log("|" + str + "|");
+        // if(this._space) str = str + ' ';
+        // if(this._head !== null) str = str + this._head.raw();
+        return str;
+    };
     /**
      * Generates the message with the given parameters
      */

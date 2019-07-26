@@ -3,17 +3,30 @@ export function msg(msg: string) {
   return new Message(msg);
 }
 
+export interface IFrameOptions {
+  padding   ?: number;
+  color     ?: TColor;
+}
+
+export type TColor =      
+  'black'       |
+  'blue'        |
+  'brightBlack' |
+  'cyan'        |
+  'green'       |
+  'magenta'     |
+  'red'         |
+  'white'       |
+  'yellow';
 
 export class Message {
-  private _bgColor    : string  = null;
-  private _bold       : boolean = false;
-  private _fgColor    : string  = null;
-  private _strikeThrough: boolean = false;
-  private _space      : boolean = false;
-  private _italic     : boolean = false;
-  private _underline  : boolean = false;
-  private _head       : Message;
-  private _message    : string;
+  private _bgColor        : string  = null;
+  private _bold           : boolean = false;
+  private _fgColor        : string  = null;
+  private _space          : boolean = false;
+  private _underline      : boolean = false;
+  private _head           : Message = null;
+  private _message        : string;
 
   /**
    * 
@@ -24,6 +37,51 @@ export class Message {
     this._head = head;
     this._message = msg;
   }
+
+  public frame(options: IFrameOptions = {
+    padding: 1,
+    color: 'white'
+  }): void {
+    options.color;
+    const lines = this.raw().split('\n');
+    const test = this.generate().split('\n');
+    const longest = Math.max.apply(this, lines.map(line => line.length));
+    
+    let ret = '╭' + '─'.repeat(longest + options.padding * 2) + '╮\n';
+
+    // test.forEach(line => {
+    //   ret += 
+    //     '│' +
+    //     ' '.repeat(options.padding) + 
+    //     line +
+    //     ' '.repeat(longest + options.padding - line.length) +
+    //     '│\n';
+    // });
+
+    for(let i = 0; i < lines.length; i++) {
+      ret += 
+        '│' +
+        ' '.repeat(options.padding) + 
+        test[i] +
+        ' '.repeat(longest + options.padding - lines[i].length) +
+        '│\n';
+    }
+    
+    ret += '╰' + '─'.repeat(longest + options.padding * 2) + '╯';
+    
+    console.log(ret);
+  }
+
+  public raw(): string {
+    let ret = this._message;
+    
+    if(this._space)         ret = ret + ' ';
+    if(this._head !== null) ret = this._head.raw() + ret;
+
+    return ret;
+  }
+
+
   /**
    * Generates the message with the given parameters
    */
@@ -37,8 +95,6 @@ export class Message {
 
     if(this._bold)      str = `\x1b[1m${str}`;
     if(this._underline) str = `\x1b[4m${str}`;
-    if(this._italic)    str = `\x1b[3m${str}`;
-    if(this._strikeThrough) str = `\x1b[9m${str}`;
   
     // Check if there is a head to this msg. If yes append it
     if(this._head !== null)  str = this._head.generate() + str;
@@ -49,17 +105,7 @@ export class Message {
    * Sets the foreground color of the message
    * @param color The foreground color
    */
-  public fg(color: 
-      'black'       |
-      'blue'        |
-      'brightBlack' |
-      'cyan'        |
-      'green'       |
-      'magenta'     |
-      'red'         |
-      'white'       |
-      'yellow'
-    ): Message {
+  public fg(color: TColor): Message {
 
     switch(color) {
       case 'black'        : this._fgColor = '\x1b[30m'; break;
@@ -79,17 +125,7 @@ export class Message {
    * Sets the background color of the message
    * @param color The background color
    */
-  public bg(color: 
-      'black'       |
-      'blue'        |
-      'brightBlack' |
-      'cyan'        |
-      'green'       |
-      'magenta'     |
-      'red'         |
-      'white'       |
-      'yellow'
-    ): Message {
+  public bg(color: TColor): Message {
     switch(color) {
       case 'black'        : this._bgColor = '\x1b[40m';   break;
       case 'blue'         : this._bgColor = '\x1b[44m';   break;
@@ -112,34 +148,12 @@ export class Message {
     return this;
   }
   /**
-   * Makes the message italic
-   * 
-   * **======== WARNING ========** 
-   * 
-   * This is rarely supported!!
-   */
-  // public i(): Message {
-  //   this._italic = true;
-  //   return this;
-  // }
-  /**
    * Makes the message underlined
    */
   public u(): Message {
     this._underline = true;
     return this;
   }
-  /**
-   * Makes the message italic
-   * 
-   * **======== WARNING ========** 
-   * 
-   * This is rarely supported!!
-   */
-  // public st(): Message {
-  //   this._strikeThrough = true;
-  //   return this;
-  // }
   /**
    * Sends the message to console.log
    */
@@ -168,4 +182,5 @@ export class Message {
   public tail(msg: string): Message {
     return new Message(msg, this);
   }
+
 }
