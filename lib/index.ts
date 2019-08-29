@@ -192,7 +192,7 @@ export class Message {
 	 * Frames the message is a sleek border
 	 * @param options Frame options
 	 */
-	private _frame(options: IFrameOptions = {
+	public _frame(options: IFrameOptions = {
 		padding: 1,
 		color: 'white'
 	}): void {
