@@ -1,8 +1,63 @@
-
+export type TType = 'background'
+| 'foreground'
+| 'clear';
+export type TColor = 'black'
+| 'blue'
+| 'brightBlack' 
+| 'cyan'
+| 'green'
+| 'magenta'
+| 'red'
+| 'white'
+| 'yellow';
+export const colorList: string[] = [
+	'black',
+	'blue',
+	'brightBlack',
+	'cyan',
+	'green',
+	'magenta',
+	'red',
+	'white',
+	'yellow',
+];
+export const escapeMap = Object.freeze({
+	clear: '\x1b[0m',
+	background: {
+		'black'       : '\x1b[40m',
+		'blue'        : '\x1b[44m',
+		'brightBlack' : '\x1b[100m',
+		'cyan'        : '\x1b[46m',
+		'green'       : '\x1b[42m',
+		'magenta'     : '\x1b[45m',
+		'red'         : '\x1b[41m',
+		'white'       : '\x1b[47m',
+		'yellow'      : '\x1b[43m',
+	},
+	foreground: {
+		'black'       : '\x1b[30m',
+		'blue'        : '\x1b[34m',
+		'brightBlack' : '\x1b[90m',
+		'cyan'        : '\x1b[36m',
+		'green'       : '\x1b[32m',
+		'magenta'     : '\x1b[35m',
+		'red'         : '\x1b[31m',
+		'white'       : '\x1b[37m',
+		'yellow'      : '\x1b[33m',
+	},
+});
+export interface IFrameOptions {
+	padding   ?: number;
+	color     ?: TColor;
+}
+export interface OptionsEncapsulate {
+	draw ?: string;
+	char ?: string;
+	padding ?: number;
+}
 export function msg(msg: string) {
 	return new Message(msg);
 }
-
 /**
  * **NOT WELL TESTED**
  * Generates the message from a template and returns an
@@ -18,7 +73,7 @@ export function _template(msg: string): {
 	let inSequence = false;
 	let sequenceStart = 0;
 	let ret = '';
-	
+
 	Array.from(msg).forEach((char, index) => {
 		if(char === '%') {
 			if(!inSequence) sequenceStart = index;
@@ -53,66 +108,9 @@ export function _template(msg: string): {
 		write : () => process.stdout.write(ret)
 	}
 }
-
-export interface IFrameOptions {
-	padding   ?: number;
-	color     ?: TColor;
+export function escapeEscapeCodes(msg: string): string {
+	return msg.replace(/\x1b/g, '\\x1b');
 }
-
-export type TColor =      
-	'black'       |
-	'blue'        |
-	'brightBlack' |
-	'cyan'        |
-	'green'       |
-	'magenta'     |
-	'red'         |
-	'white'       |
-	'yellow';
-
-export type TType = 
-	'background' |
-	'foreground' |
-	'clear';
-
-export const colorList: string[] = [
-	'black',
-	'blue',
-	'brightBlack',
-	'cyan',
-	'green',
-	'magenta',
-	'red',
-	'white',
-	'yellow',
-];
-
-export const escapeMap = Object.freeze({
-	clear: '\x1b[0m',
-	background: {
-		'black'       : '\x1b[40m',
-		'blue'        : '\x1b[44m',
-		'brightBlack' : '\x1b[100m',
-		'cyan'        : '\x1b[46m',
-		'green'       : '\x1b[42m',
-		'magenta'     : '\x1b[45m',
-		'red'         : '\x1b[41m',
-		'white'       : '\x1b[47m',
-		'yellow'      : '\x1b[43m',
-	},
-	foreground: {
-		'black'       : '\x1b[30m',
-		'blue'        : '\x1b[34m',
-		'brightBlack' : '\x1b[90m',
-		'cyan'        : '\x1b[36m',
-		'green'       : '\x1b[32m',
-		'magenta'     : '\x1b[35m',
-		'red'         : '\x1b[31m',
-		'white'       : '\x1b[37m',
-		'yellow'      : '\x1b[33m',
-	},
-});
-
 export class Message {
 	private _bgColor        : string  = null;
 	private _bold           : boolean = false;
@@ -202,15 +200,6 @@ export class Message {
 		const longest = Math.max.apply(this, lines.map(line => line.length));
 		
 		let ret = '╭' + '─'.repeat(longest + options.padding * 2) + '╮\n';
-
-		// test.forEach(line => {
-		//   ret += 
-		//     '│' +
-		//     ' '.repeat(options.padding) + 
-		//     line +
-		//     ' '.repeat(longest + options.padding - line.length) +
-		//     '│\n';
-		// });
 
 		for(let i = 0; i < lines.length; i++) {
 			ret += 
@@ -316,15 +305,3 @@ export class Message {
 		return new Message(msg, this);
 	}
 }
-
-export function escapeEscapeCodes(msg: string): string {
-	return msg.replace(/\x1b/g, '\\x1b');
-}
-
-
-export interface OptionsEncapsulate {
-	draw ?: string;
-	char ?: string;
-	padding ?: number;
-}
-
