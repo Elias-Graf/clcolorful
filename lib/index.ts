@@ -1,15 +1,16 @@
-export type TType = 'background'
+export type TColorType = 'background'
 | 'foreground'
 | 'clear';
 export type TColor = 'black'
 | 'blue'
-| 'brightBlack' 
+| 'brightBlack'
 | 'cyan'
 | 'green'
 | 'magenta'
 | 'red'
 | 'white'
 | 'yellow';
+
 export const colorList: string[] = [
 	'black',
 	'blue',
@@ -46,15 +47,17 @@ export const escapeMap = Object.freeze({
 		'yellow'      : '\x1b[33m',
 	},
 });
+
 export interface IFrameOptions {
 	padding   ?: number;
 	color     ?: TColor;
 }
-export interface OptionsEncapsulate {
+export interface IOptionsEncapsulate {
 	draw ?: string;
 	char ?: string;
 	padding ?: number;
 }
+
 export function msg(msg: string) {
 	return new Message(msg);
 }
@@ -66,9 +69,9 @@ export function msg(msg: string) {
  * *Example input: "%fg.green%this is a message %clear,bg.green,fg.black%hey"*
  * @param msg Mesage to be replaced with color codes
  */
-export function _template(msg: string): {
-	log   : () => void;
-	write : () => void;
+export function template(msg: string): {
+	log: () => void;
+	write: () => void;
 } {
 	let inSequence = false;
 	let sequenceStart = 0;
@@ -96,7 +99,7 @@ export function _template(msg: string): {
 
 	if(ret.lastIndexOf(escapeMap.clear) !== ret.length - escapeMap.clear.length) ret += escapeMap.clear;
 
-	function getEscapeCode(type: TType, color?: TColor) {
+	function getEscapeCode(type: TColorType, color?: TColor) {
 		if(type === 'clear') return escapeMap.clear;
 		else if(!(type in escapeMap)) throw new Error('Type is not in escapeMap');
 		else if(!(color in (escapeMap as any)[type])) throw new Error(`Color "${color}" is not in map "${type}"`);
@@ -111,6 +114,7 @@ export function _template(msg: string): {
 export function escapeEscapeCodes(msg: string): string {
 	return msg.replace(/\x1b/g, '\\x1b');
 }
+
 export class Message {
 	private _bgColor        : string  = null;
 	private _bold           : boolean = false;
@@ -165,7 +169,7 @@ export class Message {
 	 * @param msg Message that should be enxapsulated
 	 * @param options Encapsulations Options
 	 */
-	public static encapsulate(msg: string | Message, options?: OptionsEncapsulate): string {
+	public static encapsulate(msg: string | Message, options?: IOptionsEncapsulate): string {
 		// Make sure options is not undefined
 		if(!options) options = {};
 		let { char, draw, padding } = options;
@@ -182,7 +186,7 @@ export class Message {
 			+ (drawBottom ? charBottom.repeat(msgLength + 2 + 2 * padding) : '')
 		return ret;
 	}
-	public encaplusate(options?: OptionsEncapsulate) {
+	public encaplusate(options?: IOptionsEncapsulate) {
 		return Message.encapsulate(this, options);
 	}
 	/**
